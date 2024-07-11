@@ -1,24 +1,58 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from './components/Header'
+import UserInput from './components/UserInput';
+import Results from './components/Results'
+import { useState } from 'react';
 
 function App() {
+
+  const [employeesDataSet, setEmployeesDataSet] = useState([])
+
+  const [employeeData, setEmployeeData] = useState({
+    fname: '',
+    lname: '',
+    whours: '',
+    bsalary: '',
+    dob: '',
+    ssn: '',
+    email: ''
+  })
+
+  const employeeDataHandle = (event) => {
+    setEmployeeData(prevValues => {
+      const updatedValues = {
+        ...prevValues,
+        [event.target.name]: event.target.value
+      }
+      // console.log(updatedValues)
+      return updatedValues
+    })
+  }
+
+  
+  const employeesDataSetHandle = () => {
+    setEmployeesDataSet(prevValues => [
+        ...prevValues,
+        employeeData
+      ]
+    )
+  }
+
+  const showDataHandle = () => {
+    console.log(employeesDataSet)
+  }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header />
+      <UserInput 
+        employeeData={employeeData} 
+        onEmployeeDataChange={employeeDataHandle} 
+        onEmployeeDataSubmit={employeesDataSetHandle}
+        onShowDataClick={showDataHandle}
+        />
+      <Results personnelData={employeesDataSet} />
+    </>
   );
 }
 
